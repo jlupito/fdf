@@ -1,27 +1,45 @@
-NAME= fdf
+NAME = fdf
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
+INCLUDES = -I./includes
+MLX_INCLUDE =
+MLX_DIR=./mlx_linux
+MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 
-CFLAGS= -Wall -Wextra -Werror
+#source
+SRCS_DIR = srcs/
+SRCS = check_map.c create_map.c hooks.c error_message.c pixel_put.c window.c main.c fdf_utils.c \
 
-CC= gcc
+SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))
 
-SRC= fdf.c check_map.c \
+#objsm
+OBJS = $(SRCS_PREFIXED:.c=.o)
 
-OBJ= $(SRC:.c=.o)
+all : $(NAME)
 
-all: $(NAME)
+%.o: %.c ./includes/fdf.h
+	$(CC) $(CFLAGS) -I$(MLX_DIR) -c $< -o $@
+$(NAME): $(OBJS)
+	@$(MAKE) re -C ./libft
+	@$(MAKE) -C $(MLX_DIR)
+	@echo "\033[0;32m libmlx.dylib builded \033[m"
+	@$(CC) $(CFLAGS) $(OBJS) -L./libft -lft -lm $(MLX_FLAGS) -o $(NAME)
+	@cp $(MLX_DIR)/libmlx.dylib libmlx.dylib
+	@echo "\033[0;32m libmlx.dylib copied \033[m"
+	@echo $(NAME) est construit
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
+clean :
+	@$(MAKE) clean -C ./libft
+	@$(MAKE) clean -C $(MLX_DIR)
+	@rm -rf $(OBJS)
+	@echo cleaning
 
-clean:
-	rm -rf $(OBJ)
+fclean : clean
+	@$(MAKE) fclean -C ./libft
+	@rm -rf $(NAME)
+	@rm -rf libmlx.dylib
+	@echo "full clean"
 
-fclean: clean
-	rm -rf $(NAME)
+re : fclean all
 
-re: fclean $(NAME)
-
-%.o: %.c
-	$(CC) -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
-
-.PHONY: all clean fclean re
+.PHONY	: all clean fclean re help
