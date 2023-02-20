@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:46:32 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/17 10:01:17 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:27:04 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,22 +59,11 @@ int	save_map(int fd, t_data *fdf)
 			free(line_alti[fdf->map.x]);
 			fdf->map.x++;
 		}
+		free(line_alti);
 		free(line);
 		line = get_next_line(fd);
 		fdf->map.y++;
 	}
-	// int i = 0;
-	// int j = 0;
-	// while (i < fdf->map.nbline)
-	// {
-	// 	j = 0;
-	// 	while (j < fdf->map.nbcol)
-	// 	{
-	// 		printf("altitude: %d\n", fdf->map.map[i][j]);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
 	free (line);
 	return (0);
 }

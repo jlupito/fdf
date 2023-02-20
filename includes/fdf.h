@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:31:11 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/17 15:03:57 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:16:24 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,18 @@
 #define RED_PIXEL 0xFF0000
 #define WHITE_PIXEL 0xFFFFFF
 #define GREEN_PIXEL 0xFF00
-#define BLACK_PIXEL 0x252426
+#define BLACK_PIXEL 0x000000
 
-#define WINDOW_WIDTH 1500
-#define WINDOW_HEIGHT 1000
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 1200
+
+typedef struct s_color
+{
+	int	red;
+	int	blue;
+	int green;
+	int color;
+}	t_color;
 
 typedef struct s_coord
 {
@@ -35,6 +43,13 @@ typedef struct s_coord
 	int ymax;
 	int color;
 }	t_coord;
+
+// typedef struct s_table
+// {
+// 	int altitude;
+// 	int color;
+	
+// }	t_table
 
 typedef struct	s_map {
 	int	**map;
@@ -51,14 +66,13 @@ typedef struct	s_data {
 	void			*win_ptr;
 	void			*mlx_img;
 	char			*addr;
-	int				bpp;
+	int				bpp; /* bits per pixel */
 	int				line_len;
 	int				endian;
-	int				win_length;
-	int				win_width;
 	int				keycode;
 	int				proj;
-	// struct s_color	color;
+	// struct s_img	img;
+	struct s_color	color;
 	struct s_map	map;
 	struct s_coord	coord;
 	// struct s_mov	mov;
@@ -77,7 +91,8 @@ int	save_map(int fd, t_data *fdf);
 void	img_pix_put(t_data *fdf, int x, int y, int color);
 int	handle_keypress(int keysym, t_data *data);
 int	render(t_data *fdf);
-int	window(t_data *fdf);
-int render_grid(t_data *fdf);
+int	window(t_data fdf);
+int render_grid(t_data *fdf, t_coord coord);
+void	render_background(t_data *fdf, int color);
 
 #endif

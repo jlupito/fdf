@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:58:09 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/17 15:06:22 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:00:11 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,21 @@ void	img_pix_put(t_data *fdf, int x, int y, int color)
 	}
 }
 
-int render_grid(t_data *fdf)
+int render_grid(t_data *fdf, t_coord coord)
 {
 	int	i;
 	int j;
 
-	fdf->coord = (t_coord){WINDOW_WIDTH / 3, WINDOW_HEIGHT / 3, (WINDOW_WIDTH / 3) * 2, (WINDOW_HEIGHT / 3) * 2, WHITE_PIXEL};
-	i = fdf->coord.y;
-	while (i <= fdf->coord.ymax)
+	i = coord.y;
+	while (i < coord.ymax)
 	{
-		j = fdf->coord.x;
-		while (j <= fdf->coord.xmax)
-			mlx_pixel_put(fdf->mlx_ptr, fdf->win_ptr, j++, i, WHITE_PIXEL);
-		++i;
+		j = coord.x;
+		while (j < coord.xmax)
+		{
+			img_pix_put(fdf, j, i, WHITE_PIXEL);
+			j += ((coord.xmax - coord.x) / (fdf->map.nbcol - 1));
+		}
+		i += ((coord.ymax - coord.y) / (fdf->map.nbline - 1));
 	}
 	return (0);
 }
