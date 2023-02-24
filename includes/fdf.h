@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:31:11 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/20 17:16:24 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/24 13:16:17 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,41 +25,43 @@
 #define BLACK_PIXEL 0x000000
 
 #define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 1200
+#define WINDOW_HEIGHT 800
 
 typedef struct s_color
 {
 	int	red;
-	int	blue;
 	int green;
+	int	blue;
 	int color;
 }	t_color;
 
-typedef struct s_coord
-{
-	int	x;
-	int	y;
-	int xmax;
-	int ymax;
-	int color;
-}	t_coord;
-
-// typedef struct s_table
+// typedef struct s_coord
 // {
-// 	int altitude;
+// 	int	x;
+// 	int	y;
+// 	int x2;
+// 	int y2;
+// 	int xmax;
+// 	int ymax;
 // 	int color;
-	
-// }	t_table
+// }	t_coord;
 
 typedef struct	s_map {
-	int	**map;
-	int	nbline;
-	int	nbcol;
+	char	**tabtab;
+	int		nbline;
+	int		nbcol;
+	// int		x;
+	// int		y;
+	// int	max;
+	// int	color;
+}				t_map;
+
+typedef struct s_pixel {
 	int	x;
 	int	y;
-	// int	max;
+	int	altitude;
 	int	color;
-}				t_map;
+}			t_pixel;
 
 typedef struct	s_data {
 	void			*mlx_ptr;
@@ -69,12 +71,12 @@ typedef struct	s_data {
 	int				bpp; /* bits per pixel */
 	int				line_len;
 	int				endian;
-	int				keycode;
+	struct s_map	*map;
+	// int				keycode;
 	int				proj;
 	// struct s_img	img;
-	struct s_color	color;
-	struct s_map	map;
-	struct s_coord	coord;
+	// struct s_color	color;
+	// struct s_coord	coord;
 	// struct s_mov	mov;
 }					t_data;
 
@@ -84,15 +86,18 @@ int	check_data_map(char *argv);
 int	check_line(char *argv);
 int	count_col(char *str, char c);
 void error_message(int i);
-int	create_map(char *argv, t_data *fdf);
-int	count_col_line(char *argv, t_data *fdf);
-int	**create_double_tab(size_t x, size_t y);
-int	save_map(int fd, t_data *fdf);
+t_data	*create_map(char *argv, t_data *fdf);
+t_map	*count_col_line(char *argv, t_data *fdf);
+// int	**create_double_tab(size_t x, size_t y);
 void	img_pix_put(t_data *fdf, int x, int y, int color);
-int	handle_keypress(int keysym, t_data *data);
+int	handle_keypress(int keysym, t_data *fdf);
 int	render(t_data *fdf);
-int	window(t_data fdf);
-int render_grid(t_data *fdf, t_coord coord);
+int	window(t_data *fdf);
 void	render_background(t_data *fdf, int color);
+char	**save_map(int fd, t_data *fdf);
+t_pixel	*ft_xyline(char *str, int count, t_pixel *pixel);
+t_pixel	**get_pixel(t_data *fdf, t_pixel **pixel);
+void	set_pixel(t_data *fdf);
+int	get_color(char *str);
 
 #endif

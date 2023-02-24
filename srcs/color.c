@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/10 11:34:52 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/24 12:08:06 by jarthaud         ###   ########.fr       */
+/*   Created: 2023/02/22 11:23:48 by jarthaud          #+#    #+#             */
+/*   Updated: 2023/02/24 11:09:31 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-int	main(int argc, char **argv)
+int	get_color(char *str)
 {
-	t_data *fdf;
+    int i;
+	int	len;
+    int val;
 
-	if (argc != 2)
-		error_message(4);
-	else if (check_map(argv[1]) == -1)
-		return (-1);
-	if (!(fdf = malloc(sizeof(t_data))))
-		return (-1);
-	if (!(fdf->map = malloc(sizeof(t_map))))
-		return (-1);
-	fdf = create_map(argv[1], fdf);
-	window(fdf);
-	free(fdf->map->tabtab[0]);
-	free(fdf->map->tabtab);
-	free(fdf);
-	return (0);
+	val = 0;
+	i = 0;
+	while (str[i] != 'x')
+		i++;
+	len = i;
+	while (str[len] != ' ' && str[len])
+		len++;
+	while (i++ < len)
+	{
+    	if (str[i] <= 57)
+        	val += (str[i] - 48) * (1 << (4 * (len - 1 - i)));
+    	else
+        	val += (str[i] - 55) * (1 << (4 * (len - 1 - i)));
+	}
+	return (val);
 }

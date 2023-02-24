@@ -6,78 +6,75 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:46:32 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/20 17:27:04 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/24 11:35:51 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-// faire un GNL et dans une structure:
-// stocker les les donnees dans un double tableau
-// compter et stocker le nb de colonnes avec split
-// compter et stocker le nb de lignes
-// si couleur: stoker la couleur
-
-
-int	count_col_line(char *argv, t_data *fdf)
+t_map	*count_col_line(char *argv, t_data *fdf)
 {
 	char *line;
 	int	fd;
 
+	fdf->map->nbline = 0;
 	fd = open(argv, O_RDONLY);
 	if (fd == -1)
-		return (-1);
+		return (NULL);
 	line = get_next_line(fd);
-	fdf->map.nbcol = count_col(line, ' ');
+	fdf->map->nbcol = count_col(line, ' ');
 	while (line != NULL)
 	{
-		fdf->map.nbline++;
+		fdf->map->nbline++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	free(line);
 	if (close(fd) == -1)
-		return (-1);
-	return (0);
+		return (NULL);
+	return (fdf->map);
 }
 
-int	save_map(int fd, t_data *fdf)
+char	**save_map(int fd, t_data *fdf)
 {
-	char **line_alti;
 	char *line;
+	int	i;
+	int	j;
 	
-	if (!(fdf->map.map = create_double_tab(fdf->map.nbcol, fdf->map.nbline)))
-		return (-1);
+	fdf->map->tabtab[fdf->map->nbline] = NULL;
 	line = get_next_line(fd);
+	i = 0;
 	while (line != NULL)
 	{
-		fdf->map.x = 0;
-		line_alti = ft_split(line, ' ');
-		while (line_alti[fdf->map.x] != NULL)
+		if (!(fdf->map->tabtab[i] = malloc(sizeof(char) * (ft_strlen(line) + 1))))
+			return (NULL);
+		j = 0;
+		while (line[j])
 		{
-			fdf->map.map[fdf->map.y][fdf->map.x] = ft_atoi(line_alti[fdf->map.x]);
-			free(line_alti[fdf->map.x]);
-			fdf->map.x++;
+			fdf->map->tabtab[i][j] = line[j];
+			j++;	
 		}
-		free(line_alti);
+		fdf->map->tabtab[i][j] = '\0';
 		free(line);
 		line = get_next_line(fd);
-		fdf->map.y++;
+		i++;
 	}
 	free (line);
-	return (0);
+	return (fdf->map->tabtab);
 }
 
-int	create_map(char *argv, t_data *fdf)
+t_data	*create_map(char *argv, t_data *fdf)
 {
 	int		fd;
 	
-	count_col_line(argv, fdf);
+	fdf->map = count_col_line(argv, fdf);
 	fd = open(argv, O_RDONLY);
 	if (fd == -1)
-		return (-1);
-	save_map(fd, fdf);
+		return (NULL);
+	if(!(fdf->map->tabtab = malloc(sizeof(char*) * (fdf->map->nbline + 3))))
+		return (NULL);
+	fdf->map->tabtab = save_map(fd, fdf);
 	if (close(fd) == -1)
-		return (-1);
-	return (0);
+		return (NULL);
+	return (fdf);
 }

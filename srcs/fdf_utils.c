@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:55:56 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/17 10:01:30 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/24 11:26:32 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,23 @@ int	count_col(char *str, char c)
 	return (col);
 }
 
-int	**create_double_tab(size_t x, size_t y)
-{
-	size_t	i;
-	int	**tab;
-	int	*tab2;
+// int	**create_double_tab(size_t x, size_t y)
+// {
+// 	size_t	i;
+// 	int	**tab;
+// 	int	*tab2;
 
-	i = 0;
-	tab = (int**)malloc(sizeof(tab) * y);
-	if (!tab)
-		return (NULL);
-	tab2 = (int*)malloc(sizeof(tab2) * (x * y));
-	if (!tab2)
-		return (NULL);
-	while (i < y)
-	{
-		tab[i] = &tab2[i * x];
-		i++;
-	}
-	return (tab);
-}
+// 	i = 0;
+// 	tab = (int**)malloc(sizeof(tab) * y);
+// 	if (!tab)
+// 		return (NULL);
+// 	tab2 = (int*)malloc(sizeof(tab2) * (x * y));
+// 	if (!tab2)
+// 		return (NULL);
+// 	while (i < y)
+// 	{
+// 		tab[i] = &tab2[i * x];
+// 		i++;
+// 	}
+// 	return (tab);
+// }
