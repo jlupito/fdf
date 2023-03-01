@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:34:52 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/24 12:08:06 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/28 15:29:50 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 
 int	main(int argc, char **argv)
 {
-	t_data *fdf;
+	t_data fdf;
+	int i = 0;
 
 	if (argc != 2)
 		error_message(4);
 	else if (check_map(argv[1]) == -1)
 		return (-1);
-	if (!(fdf = malloc(sizeof(t_data))))
-		return (-1);
-	if (!(fdf->map = malloc(sizeof(t_map))))
-		return (-1);
-	fdf = create_map(argv[1], fdf);
+	fill_map(argv[1], &fdf);
 	window(fdf);
-	free(fdf->map->tabtab[0]);
-	free(fdf->map->tabtab);
-	free(fdf);
+	while (i < fdf.map.nbline)
+		free(fdf.map.pixel[i++]);
+	free(fdf.map.pixel);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:31:11 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/24 13:16:17 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:13:05 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,44 +24,33 @@
 #define GREEN_PIXEL 0xFF00
 #define BLACK_PIXEL 0x000000
 
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
-
-typedef struct s_color
-{
-	int	red;
-	int green;
-	int	blue;
-	int color;
-}	t_color;
-
-// typedef struct s_coord
-// {
-// 	int	x;
-// 	int	y;
-// 	int x2;
-// 	int y2;
-// 	int xmax;
-// 	int ymax;
-// 	int color;
-// }	t_coord;
-
-typedef struct	s_map {
-	char	**tabtab;
-	int		nbline;
-	int		nbcol;
-	// int		x;
-	// int		y;
-	// int	max;
-	// int	color;
-}				t_map;
+#define WINDOW_WIDTH 1600
+#define WINDOW_HEIGHT 1000
 
 typedef struct s_pixel {
 	int	x;
 	int	y;
-	int	altitude;
+	int	alti;
 	int	color;
 }			t_pixel;
+
+typedef struct	s_map {
+	t_pixel	**pixel;
+	int		nbline;
+	int		nbcol;
+	int		x1;
+	int 	y1;
+}				t_map;
+
+
+typedef struct	s_coord {
+	int	x1;
+	int	y1;	
+	int	x2;
+	int	y2;
+	int	alti1;
+	int	alti2;
+}				t_coord;
 
 typedef struct	s_data {
 	void			*mlx_ptr;
@@ -71,13 +60,10 @@ typedef struct	s_data {
 	int				bpp; /* bits per pixel */
 	int				line_len;
 	int				endian;
-	struct s_map	*map;
+	struct s_map	map;
 	// int				keycode;
 	int				proj;
-	// struct s_img	img;
-	// struct s_color	color;
-	// struct s_coord	coord;
-	// struct s_mov	mov;
+	int				offset;
 }					t_data;
 
 int	check_map(char *argv);
@@ -86,18 +72,24 @@ int	check_data_map(char *argv);
 int	check_line(char *argv);
 int	count_col(char *str, char c);
 void error_message(int i);
-t_data	*create_map(char *argv, t_data *fdf);
-t_map	*count_col_line(char *argv, t_data *fdf);
-// int	**create_double_tab(size_t x, size_t y);
+void	count_col_line(char *argv, t_data *fdf);
 void	img_pix_put(t_data *fdf, int x, int y, int color);
 int	handle_keypress(int keysym, t_data *fdf);
 int	render(t_data *fdf);
-int	window(t_data *fdf);
+int	window(t_data fdf);
 void	render_background(t_data *fdf, int color);
-char	**save_map(int fd, t_data *fdf);
-t_pixel	*ft_xyline(char *str, int count, t_pixel *pixel);
-t_pixel	**get_pixel(t_data *fdf, t_pixel **pixel);
-void	set_pixel(t_data *fdf);
+void	render_grid(t_data *fdf);
+t_pixel	*xyline(char *str, int count, t_pixel *pixel, t_data *fdf);
 int	get_color(char *str);
+t_pixel	**save_map(int fd, t_pixel **pixel, t_data *fdf);
+void	fill_map(char *argv, t_data *fdf);
+void	render_grid(t_data *fdf);
+// int	calculate_rotate(int degree, s_coord coord);
 
 #endif
+
+// void	create_map(char *argv, t_data *fdf);
+// int	**create_double_tab(size_t x, size_t y);
+// t_pixel	**get_pixel(t_data *fdf, t_pixel **pixel);
+// void	set_pixel(t_data *fdf);
+// char	**save_map(int fd, t_data *fdf);

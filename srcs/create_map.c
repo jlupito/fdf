@@ -6,75 +6,89 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:46:32 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/24 11:35:51 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:59:17 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-t_map	*count_col_line(char *argv, t_data *fdf)
+void	count_col_line(char *argv, t_data *fdf)
 {
 	char *line;
 	int	fd;
 
-	fdf->map->nbline = 0;
+	fdf->map.nbcol = 0;
+	fdf->map.nbline = 0;
 	fd = open(argv, O_RDONLY);
 	if (fd == -1)
-		return (NULL);
+		return ;
 	line = get_next_line(fd);
-	fdf->map->nbcol = count_col(line, ' ');
+	fdf->map.nbcol = count_col(line, ' ');
 	while (line != NULL)
 	{
-		fdf->map->nbline++;
+		fdf->map.nbline++;
 		free(line);
 		line = get_next_line(fd);
 	}
 	free(line);
 	if (close(fd) == -1)
-		return (NULL);
-	return (fdf->map);
+		return ;
 }
 
-char	**save_map(int fd, t_data *fdf)
+t_pixel	*xyline(char *str, int count, t_pixel *pixel, t_data *fdf)
+{
+	int	i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (j < fdf->map.nbcol)
+	{
+		while (str[i] == ' ' && str[i])
+			i++;
+		pixel[j].alti = ft_atoi(&str[i]) * 10;
+		pixel[j].x = (WINDOW_WIDTH / 2) + (j * 10); // - (count * 10);
+		pixel[j].y = (WINDOW_HEIGHT / 3) + (count * 10); // - (pixel[j].alti * 5);
+		pixel[j].color = get_color(&str[i]);
+		while (str[i] != ' ' && str[i])
+			i++;
+		j++;
+	}
+	return (pixel);
+}
+
+t_pixel	**save_map(int fd, t_pixel **pixel, t_data *fdf)
 {
 	char *line;
-	int	i;
-	int	j;
-	
-	fdf->map->tabtab[fdf->map->nbline] = NULL;
+	int	count;
+
+	count = 0;
 	line = get_next_line(fd);
-	i = 0;
-	while (line != NULL)
+	while (count < fdf->map.nbline)
 	{
-		if (!(fdf->map->tabtab[i] = malloc(sizeof(char) * (ft_strlen(line) + 1))))
+		if (!(pixel[count] = malloc(sizeof(t_pixel) * (fdf->map.nbcol))))
 			return (NULL);
-		j = 0;
-		while (line[j])
-		{
-			fdf->map->tabtab[i][j] = line[j];
-			j++;	
-		}
-		fdf->map->tabtab[i][j] = '\0';
+		pixel[count] = xyline(line, count, pixel[count], fdf);
+		count++;
 		free(line);
 		line = get_next_line(fd);
-		i++;
 	}
-	free (line);
-	return (fdf->map->tabtab);
+	free(line);
+	return (pixel);
 }
 
-t_data	*create_map(char *argv, t_data *fdf)
+void	fill_map(char *argv, t_data *fdf)
 {
 	int		fd;
+	t_pixel **pixel;
 	
-	fdf->map = count_col_line(argv, fdf);
+	count_col_line(argv, fdf);
+	if (!(pixel = malloc(sizeof(t_pixel*) * (fdf->map.nbline))))
+		return ;
 	fd = open(argv, O_RDONLY);
 	if (fd == -1)
-		return (NULL);
-	if(!(fdf->map->tabtab = malloc(sizeof(char*) * (fdf->map->nbline + 3))))
-		return (NULL);
-	fdf->map->tabtab = save_map(fd, fdf);
+		return ;
+	fdf->map.pixel = save_map(fd, pixel, fdf);
 	if (close(fd) == -1)
-		return (NULL);
-	return (fdf);
+		return ;
 }

@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:23:48 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/24 11:09:31 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/01 12:27:32 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,19 @@ int	get_color(char *str)
 
 	val = 0;
 	i = 0;
-	while (str[i] != 'x')
+	while (str[i] != 'x' && str[i] != ' ' && str[i])
+	{
 		i++;
+		if (str[i] == ' ' || str[i] == '\0')
+			return (16777215);
+	}
 	len = i;
 	while (str[len] != ' ' && str[len])
+	{
+		if (str[len] >= 97 && str[len] <= 122)
+			str[len] = str[len] - 32;
 		len++;
+	}
 	while (i++ < len)
 	{
     	if (str[i] <= 57)

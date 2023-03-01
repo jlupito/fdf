@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/10 11:49:41 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/17 10:01:10 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/27 10:52:37 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ int check_fdf(char *argv)
 {
 	int	i;
 
-	i = ft_strlen(argv);
-	if (argv[i - 1] == 'f' && argv[i - 2] == 'd' && argv[i - 3] == 'f' && argv[i - 4] == '.')
+	i = 0;
+	while (argv[i] != '.' && argv[i])
+		i++;
+	if (argv[i + 1] == 'f' && argv[i + 2] == 'd' && argv[i + 3] == 'f' && argv[i + 4] == '\0')
 		return (0);
 	else
 		return (error_message(1), -1);
