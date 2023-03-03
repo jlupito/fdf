@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:23:48 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/01 12:27:32 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/03 16:25:19 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,16 @@ int	get_color(char *str)
         	val += (str[i] - 55) * (1 << (4 * (len - 1 - i)));
 	}
 	return (val);
+}
+
+int	get_color_line(int color1, int color2)
+{
+    int color;
+
+	color = 0;
+	if (color1 == color2)
+		color = color1;
+	else
+		color = color2;
+	return(color);
 }

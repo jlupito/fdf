@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:58:09 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/01 16:57:42 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:40:36 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,15 @@ void	render_grid(t_data *fdf)
 	int	j;
 
 	i = 0;
-	fdf->map.y1 = 0;
-	fdf->map.x1 = 0;
+	// fdf->map.y1 = 0;
+	// fdf->map.x1 = 0;
 	while (i < fdf->map.nbline)
 	{
 		j = 0;
-		//fdf->map.y1 = fdf->map.pixel[i][j].y;
 		while (j < fdf->map.nbcol)
 		{
 			fdf->map.x1 = (fdf->map.pixel[i][j].x - fdf->map.pixel[i][j].y) * cos(0.5236);
-			fdf->map.y1 = -fdf->map.pixel[i][j].alti + sin(0.5236) * (fdf->map.pixel[i][j].x + fdf->map.pixel[i][j].y);
-			//fdf->map.x1 = (fdf->map.pixel[i][j].x);
+	        fdf->map.y1 = -fdf->map.pixel[i][j].alti + sin(0.5236) * (fdf->map.pixel[i][j].x + fdf->map.pixel[i][j].y);
 			if ((fdf->map.x1 > 0 && fdf->map.x1 < WINDOW_WIDTH) && (fdf->map.y1 > 0 && fdf->map.y1 < WINDOW_HEIGHT))
 				img_pix_put(fdf, fdf->map.x1, fdf->map.y1, fdf->map.pixel[i][j].color);
 			j++;
@@ -69,32 +67,14 @@ void	render_grid(t_data *fdf)
 	}
 }
 
-// void	render_grid(t_data *fdf)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	while (i < fdf->map.nbline)
-// 	{
-// 		j = 0;
-// 		while (j < fdf->map.nbcol)
-// 		{
-// 			if ((fdf->map.pixel[i][j].x > 0 && fdf->map.pixel[i][j].x < WINDOW_WIDTH) && (fdf->map.pixel[i][j].y > 0 && fdf->map.pixel[i][j].y < WINDOW_HEIGHT))
-// 				img_pix_put(fdf, fdf->map.pixel[i][j].x, fdf->map.pixel[i][j].y, fdf->map.pixel[i][j].color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
 int	render(t_data *fdf)
 {	
 	if (fdf->win_ptr == NULL)
 		return (-1);
 	render_background(fdf, BLACK_PIXEL);
-	// fdf->offset = 10;
 	render_grid(fdf);
+	draw_line(fdf);
+	draw_column(fdf);
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->mlx_img, 0, 0);
 	return (0);
 }
@@ -122,3 +102,23 @@ int	window(t_data fdf)
 
 	return (0);
 }
+
+
+// void	render_grid(t_data *fdf)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	while (i < fdf->map.nbline)
+// 	{
+// 		j = 0;
+// 		while (j < fdf->map.nbcol)
+// 		{
+// 			if ((fdf->map.pixel[i][j].x > 0 && fdf->map.pixel[i][j].x < WINDOW_WIDTH) && (fdf->map.pixel[i][j].y > 0 && fdf->map.pixel[i][j].y < WINDOW_HEIGHT))
+// 				img_pix_put(fdf, fdf->map.pixel[i][j].x, fdf->map.pixel[i][j].y, fdf->map.pixel[i][j].color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
