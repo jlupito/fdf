@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:46:32 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/03 16:23:26 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:09:00 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 
 void	offset(t_data *fdf)
 {
+	fdf->horizontal = 0;	
+	fdf->vertical = 0;	
 	if (fdf->map.nbcol <= 20)
 		fdf->offset = 25;
 	else if (fdf->map.nbcol >= 20 && fdf->map.nbcol <= 50)
@@ -59,8 +61,6 @@ void	count_col_line(char *argv, t_data *fdf)
 		line = get_next_line(fd);
 	}
 	free(line);
-	printf("col: %d\n", fdf->map.nbcol);
-	printf("line: %d\n", fdf->map.nbline);
 	if (close(fd) == -1)
 		return ;
 }
@@ -77,13 +77,13 @@ t_pixel	*xyline(char *str, int count, t_pixel *pixel, t_data *fdf)
 		while (str[i] == ' ' && str[i])
 			i++;
 		pixel[j].alti = ft_atoi(&str[i]) * (fdf->offset / 2);
-		pixel[j].x = (WINDOW_WIDTH / 2) + (j * fdf->offset); // - (count * 10);
-		pixel[j].y = (WINDOW_HEIGHT / 4) + (count * fdf->offset); // - (pixel[j].alti * 5);
+		pixel[j].save_alti = pixel[j].alti;
+		pixel[j].x = ((WINDOW_WIDTH / 5)) + (j * fdf->offset);
+		pixel[j].y = (WINDOW_HEIGHT / 2) + (count * fdf->offset);
 		pixel[j].color = get_color(&str[i]);
 		while (str[i] != ' ' && str[i])
 			i++;
 		j++;
-		
 	}
 	return (pixel);
 }
@@ -115,7 +115,6 @@ void	fill_map(char *argv, t_data *fdf)
 	
 	count_col_line(argv, fdf);
 	offset(fdf);
-	// position_map(fdf);
 	if (!(pixel = malloc(sizeof(t_pixel*) * (fdf->map.nbline))))
 		return ;
 	fd = open(argv, O_RDONLY);

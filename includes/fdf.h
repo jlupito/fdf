@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:31:11 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/03 16:13:44 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:08:34 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,16 @@ typedef struct s_pixel {
 	int	x;
 	int	y;
 	int	alti;
+	int	save_alti;
 	int	color;
 }			t_pixel;
+
+// typedef struct	s_color {
+// 	int red;
+// 	int blue;
+// 	int	green;
+// 	int color;
+// }			t_color;
 
 typedef struct	s_map {
 	t_pixel	**pixel;
@@ -65,8 +73,13 @@ typedef struct	s_data {
 	int				line_len;
 	int				endian;
 	struct s_map	map;
-	int				proj;
+	int				horizontal;
+	int				vertical;
+	int				height;
 	int				offset;
+	int 			degree;
+	int				zoom;
+	float			rotate;
 }					t_data;
 
 int	check_map(char *argv);
@@ -75,6 +88,7 @@ int	check_data_map(char *argv);
 int	check_line(char *argv);
 int	count_col(char *str, char c);
 int	handle_keypress(int keysym, t_data *fdf);
+// int	handle_buttonpress(int button, int x, int y, t_data *fdf);
 int	render(t_data *fdf);
 int	window(t_data fdf);
 int	get_color(char *str);
@@ -93,10 +107,10 @@ void    prep_bresenham(t_data *fdf);
 void    draw_line(t_data *fdf);
 void    draw_column(t_data *fdf);
 void	offset(t_data *fdf);
-void	position_map(t_data *fdf);
 
 #endif
 
+// void	position_map(t_data *fdf);
 // void proj(t_data *fdf, int i, int j);
 // int	calculate_rotate(int degree, s_coord coord);
 // void	create_map(char *argv, t_data *fdf);

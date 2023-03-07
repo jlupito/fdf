@@ -6,20 +6,20 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:48:22 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/13 17:11:24 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/02/16 14:37:28 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_mallocone(char *s1)
-{
-	s1 = malloc(sizeof(char));
-	if (!s1)
-		return (NULL);
-	s1[0] = '\0';
-	return (s1);
-}
+// char	*ft_mallocone(char *s1)
+// {
+// 	s1 = malloc(sizeof(char));
+// 	if (!s1)
+// 		return (NULL);
+// 	s1[0] = '\0';
+// 	return (s1);
+// }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -28,7 +28,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*dst;
 
 	if (!s1)
-		s1 = ft_mallocone(s1);
+		s1 = ft_mallocone();
 	i = 0;
 	dst = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!dst)

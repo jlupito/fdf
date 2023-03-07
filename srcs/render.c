@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:58:09 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/03 14:40:36 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/07 14:56:20 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ void	render_grid(t_data *fdf)
 	int	j;
 
 	i = 0;
-	// fdf->map.y1 = 0;
-	// fdf->map.x1 = 0;
 	while (i < fdf->map.nbline)
 	{
 		j = 0;
 		while (j < fdf->map.nbcol)
 		{
-			fdf->map.x1 = (fdf->map.pixel[i][j].x - fdf->map.pixel[i][j].y) * cos(0.5236);
-	        fdf->map.y1 = -fdf->map.pixel[i][j].alti + sin(0.5236) * (fdf->map.pixel[i][j].x + fdf->map.pixel[i][j].y);
+			fdf->map.x1 =  cos(0.5236) * (fdf->map.pixel[i][j].y + fdf->map.pixel[i][j].x) + fdf->horizontal + fdf->zoom;
+	        fdf->map.y1 = (fdf->map.pixel[i][j].y - fdf->map.pixel[i][j].x) * sin(0.5236) - (fdf->map.pixel[i][j].alti) - fdf->vertical + fdf->zoom;
 			if ((fdf->map.x1 > 0 && fdf->map.x1 < WINDOW_WIDTH) && (fdf->map.y1 > 0 && fdf->map.y1 < WINDOW_HEIGHT))
 				img_pix_put(fdf, fdf->map.x1, fdf->map.y1, fdf->map.pixel[i][j].color);
 			j++;
@@ -72,7 +70,7 @@ int	render(t_data *fdf)
 	if (fdf->win_ptr == NULL)
 		return (-1);
 	render_background(fdf, BLACK_PIXEL);
-	render_grid(fdf);
+	// render_grid(fdf);
 	draw_line(fdf);
 	draw_column(fdf);
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->mlx_img, 0, 0);
@@ -95,6 +93,7 @@ int	window(t_data fdf)
 
 	mlx_loop_hook(fdf.mlx_ptr, &render, &fdf);
 	mlx_hook(fdf.win_ptr, KeyPress, KeyPressMask, handle_keypress, &fdf);
+	// mlx_hook(fdf.win_ptr, ButtonPress, ButtonPressMask, handle_buttonpress, &fdf);
 	mlx_loop(fdf.mlx_ptr);
 	mlx_destroy_image(fdf.mlx_ptr, fdf.mlx_img);
 	mlx_destroy_display(fdf.mlx_ptr);
@@ -102,6 +101,7 @@ int	window(t_data fdf)
 
 	return (0);
 }
+
 
 
 // void	render_grid(t_data *fdf)
@@ -115,8 +115,10 @@ int	window(t_data fdf)
 // 		j = 0;
 // 		while (j < fdf->map.nbcol)
 // 		{
-// 			if ((fdf->map.pixel[i][j].x > 0 && fdf->map.pixel[i][j].x < WINDOW_WIDTH) && (fdf->map.pixel[i][j].y > 0 && fdf->map.pixel[i][j].y < WINDOW_HEIGHT))
-// 				img_pix_put(fdf, fdf->map.pixel[i][j].x, fdf->map.pixel[i][j].y, fdf->map.pixel[i][j].color);
+// 			//fdf->map.x1 = (fdf->map.pixel[i][j].x - fdf->map.pixel[i][j].y) * cos(0.5236) + fdf->horizontal;
+	        //fdf->map.y1 = (-fdf->map.pixel[i][j].alti) + sin(0.5236) * (fdf->map.pixel[i][j].x + fdf->map.pixel[i][j].y) - fdf->vertical;
+// 			if ((fdf->map.x1 > 0 && fdf->map.x1 < WINDOW_WIDTH) && (fdf->map.y1 > 0 && fdf->map.y1 < WINDOW_HEIGHT))
+// 				img_pix_put(fdf, fdf->map.x1, fdf->map.y1, fdf->map.pixel[i][j].color);
 // 			j++;
 // 		}
 // 		i++;

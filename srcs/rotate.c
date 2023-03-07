@@ -6,13 +6,13 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 12:19:48 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/02 12:07:54 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/06 18:02:52 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-int	calculate_rotate(int degree, t_data fdf)
+void	calculate_rotate(int degree, t_data fdf)
 {
 	float	sinus;
 	float	cosinus;
