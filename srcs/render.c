@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:58:09 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/07 14:56:20 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:04:08 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	window(t_data fdf)
 
 	mlx_loop_hook(fdf.mlx_ptr, &render, &fdf);
 	mlx_hook(fdf.win_ptr, KeyPress, KeyPressMask, handle_keypress, &fdf);
-	// mlx_hook(fdf.win_ptr, ButtonPress, ButtonPressMask, handle_buttonpress, &fdf);
+	mlx_hook(fdf.win_ptr, 17, 0, handle_buttonpress, &fdf);
 	mlx_loop(fdf.mlx_ptr);
 	mlx_destroy_image(fdf.mlx_ptr, fdf.mlx_img);
 	mlx_destroy_display(fdf.mlx_ptr);

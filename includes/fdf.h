@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:31:11 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/07 15:08:34 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/08 13:34:01 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ typedef struct	s_map {
     int 	sx;
     int 	sy;
     int 	e2;
-	int		win_width;
-	int		win_height;
+	int		alt_min;
+	int		alt_max;
 }				t_map;
 
 typedef struct	s_data {
@@ -87,13 +87,14 @@ int check_fdf(char *str);
 int	check_data_map(char *argv);
 int	check_line(char *argv);
 int	count_col(char *str, char c);
+int	center_coord(int i, int j, int flag, t_data *fdf);
 int	handle_keypress(int keysym, t_data *fdf);
-// int	handle_buttonpress(int button, int x, int y, t_data *fdf);
+int	handle_buttonpress(t_data *fdf);
 int	render(t_data *fdf);
 int	window(t_data fdf);
 int	get_color(char *str);
 int	get_color_line(int color1, int color2);
-t_pixel	*xyline(char *str, int count, t_pixel *pixel, t_data *fdf);
+t_pixel	*xyline(char *str, int i, t_pixel *pixel, t_data *fdf);
 t_pixel	**save_map(int fd, t_pixel **pixel, t_data *fdf);
 void	fill_map(char *argv, t_data *fdf);
 void	render_background(t_data *fdf, int color);
@@ -107,6 +108,7 @@ void    prep_bresenham(t_data *fdf);
 void    draw_line(t_data *fdf);
 void    draw_column(t_data *fdf);
 void	offset(t_data *fdf);
+void	reset_alti(t_data *fdf, int alti);
 
 #endif
 
