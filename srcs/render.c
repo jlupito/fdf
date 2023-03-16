@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:58:09 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/08 17:04:08 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:55:52 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	img_pix_put(t_data *fdf, int x, int y, int color)
 {
-	char    *pixel;
+	char	*pixel;
 	int		i;
 
 	i = fdf->bpp - 8;
-    pixel = fdf->addr + (y * fdf->line_len + x * (fdf->bpp / 8));
+	pixel = fdf->addr + (y * fdf->line_len + x * (fdf->bpp / 8));
 	while (i >= 0)
 	{
 		if (fdf->endian != 0)
@@ -44,35 +44,13 @@ void	render_background(t_data *fdf, int color)
 	}
 }
 
-void	render_grid(t_data *fdf)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < fdf->map.nbline)
-	{
-		j = 0;
-		while (j < fdf->map.nbcol)
-		{
-			fdf->map.x1 =  cos(0.5236) * (fdf->map.pixel[i][j].y + fdf->map.pixel[i][j].x) + fdf->horizontal + fdf->zoom;
-	        fdf->map.y1 = (fdf->map.pixel[i][j].y - fdf->map.pixel[i][j].x) * sin(0.5236) - (fdf->map.pixel[i][j].alti) - fdf->vertical + fdf->zoom;
-			if ((fdf->map.x1 > 0 && fdf->map.x1 < WINDOW_WIDTH) && (fdf->map.y1 > 0 && fdf->map.y1 < WINDOW_HEIGHT))
-				img_pix_put(fdf, fdf->map.x1, fdf->map.y1, fdf->map.pixel[i][j].color);
-			j++;
-		}
-		i++;
-	}
-}
-
 int	render(t_data *fdf)
 {	
 	if (fdf->win_ptr == NULL)
 		return (-1);
 	render_background(fdf, BLACK_PIXEL);
-	// render_grid(fdf);
-	draw_line(fdf);
-	draw_column(fdf);
+	draw_line(fdf, 0, 0);
+	draw_column(fdf, 0, 0);
 	mlx_put_image_to_window(fdf->mlx_ptr, fdf->win_ptr, fdf->mlx_img, 0, 0);
 	return (0);
 }
@@ -82,15 +60,16 @@ int	window(t_data fdf)
 	fdf.mlx_ptr = mlx_init();
 	if (fdf.mlx_ptr == NULL)
 		return (-1);
-	fdf.win_ptr = mlx_new_window(fdf.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT, "fdf");
+	fdf.win_ptr = mlx_new_window(fdf.mlx_ptr,
+			WINDOW_WIDTH, WINDOW_HEIGHT, "fdf");
 	if (fdf.win_ptr == NULL)
 	{
 		free(fdf.win_ptr);
 		return (-1);
 	}
 	fdf.mlx_img = mlx_new_image(fdf.mlx_ptr, WINDOW_WIDTH, WINDOW_HEIGHT);
-	fdf.addr = mlx_get_data_addr(fdf.mlx_img, &fdf.bpp, &fdf.line_len, &fdf.endian);
-
+	fdf.addr = mlx_get_data_addr(fdf.mlx_img, &fdf.bpp,
+			&fdf.line_len, &fdf.endian);
 	mlx_loop_hook(fdf.mlx_ptr, &render, &fdf);
 	mlx_hook(fdf.win_ptr, KeyPress, KeyPressMask, handle_keypress, &fdf);
 	mlx_hook(fdf.win_ptr, 17, 0, handle_buttonpress, &fdf);
@@ -98,29 +77,5 @@ int	window(t_data fdf)
 	mlx_destroy_image(fdf.mlx_ptr, fdf.mlx_img);
 	mlx_destroy_display(fdf.mlx_ptr);
 	free(fdf.mlx_ptr);
-
 	return (0);
 }
-
-
-
-// void	render_grid(t_data *fdf)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	while (i < fdf->map.nbline)
-// 	{
-// 		j = 0;
-// 		while (j < fdf->map.nbcol)
-// 		{
-// 			//fdf->map.x1 = (fdf->map.pixel[i][j].x - fdf->map.pixel[i][j].y) * cos(0.5236) + fdf->horizontal;
-	        //fdf->map.y1 = (-fdf->map.pixel[i][j].alti) + sin(0.5236) * (fdf->map.pixel[i][j].x + fdf->map.pixel[i][j].y) - fdf->vertical;
-// 			if ((fdf->map.x1 > 0 && fdf->map.x1 < WINDOW_WIDTH) && (fdf->map.y1 > 0 && fdf->map.y1 < WINDOW_HEIGHT))
-// 				img_pix_put(fdf, fdf->map.x1, fdf->map.y1, fdf->map.pixel[i][j].color);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }

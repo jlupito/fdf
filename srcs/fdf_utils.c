@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 10:55:56 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/08 17:11:57 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:44:50 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	count_col(char *str, char c)
 {
-	int i;
-	int col;
+	int	i;
+	int	col;
 
 	i = 0;
 	col = 0;
@@ -35,8 +35,8 @@ int	count_col(char *str, char c)
 
 void	count_col_line(char *argv, t_data *fdf)
 {
-	char *line;
-	int	fd;
+	char	*line;
+	int		fd;
 
 	fdf->map.nbcol = 0;
 	fdf->map.nbline = 0;
@@ -56,36 +56,47 @@ void	count_col_line(char *argv, t_data *fdf)
 		return ;
 }
 
-void	reset_alti(t_data *fdf, int alti)
+void	offset(t_data *fdf)
 {
-	int i;
-	int j;
-	
-	i = 0;
-	j = 0;
-	{
-		i = 0;
-		while (i < fdf->map.nbline)
-		{
-			j = 0;
-			while (j < fdf->map.nbcol)
-			{
-				// if (alti < 50)
-				// 	fdf->map.pixel[i][j].alti *= 1.5;
-				if (alti >= 50 && alti < 100)
-					fdf->map.pixel[i][j].alti /= 2;
-				if (alti >= 100 && alti < 150)
-					fdf->map.pixel[i][j].alti /= 6;
-				if (alti >= 150 && alti < 250)
-					fdf->map.pixel[i][j].alti /= 8;
-				if (alti >= 250 && alti < 350)
-					fdf->map.pixel[i][j].alti /= 10;
-				if (alti >= 350)
-					fdf->map.pixel[i][j].alti /= 12;
-				j++;
-			}
-			i++;
-		}
-	}
+	fdf->horizontal = 0;
+	fdf->vertical = 0;
+	if (fdf->map.nbcol <= 20)
+		fdf->offset = 25;
+	else if (fdf->map.nbcol >= 20 && fdf->map.nbcol < 50)
+		fdf->offset = 20;
+	else if (fdf->map.nbcol >= 50 && fdf->map.nbcol < 100)
+		fdf->offset = 15;
+	else if (fdf->map.nbcol >= 100 && fdf->map.nbcol < 200)
+		fdf->offset = 8;
+	else if (fdf->map.nbcol >= 200 && fdf->map.nbcol < 500)
+		fdf->offset = 5;
+	else
+		fdf->offset = 2;
 }
 
+void	reset_alti(t_data *fdf, int alti)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < fdf->map.nbline)
+	{
+		j = 0;
+		while (j < fdf->map.nbcol)
+		{
+			if (alti >= 50 && alti < 100)
+				fdf->map.pixel[i][j].alti /= 1.5;
+			if (alti >= 100 && alti < 150)
+				fdf->map.pixel[i][j].alti /= 2;
+			if (alti >= 150 && alti < 250)
+				fdf->map.pixel[i][j].alti /= 3;
+			if (alti >= 250 && alti < 350)
+				fdf->map.pixel[i][j].alti /= 4;
+			if (alti >= 350)
+				fdf->map.pixel[i][j].alti /= 5;
+			j++;
+		}
+	i++;
+	}
+}

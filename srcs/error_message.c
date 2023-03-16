@@ -6,13 +6,13 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 12:36:58 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/02/17 10:01:22 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/15 12:53:18 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-void error_message(int i)
+void	error_message(int i)
 {
 	if (i == 1)
 		ft_putendl_fd("Map is not .fdf format", 2);

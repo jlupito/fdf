@@ -6,17 +6,32 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:23:48 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/08 16:32:25 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:36:40 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
+int	get_color_int(int i, int len, char *str)
+{
+	int	val;
+
+	val = 0;
+	while (i++ < len)
+	{
+		if (str[i] <= 57)
+			val += (str[i] - 48) * (1 << (4 * (len - 1 - i)));
+		else
+			val += (str[i] - 55) * (1 << (4 * (len - 1 - i)));
+	}
+	return (val);
+}
+
 int	get_color(char *str)
 {
-    int i;
+	int	i;
 	int	len;
-    int val;
+	int	val;
 
 	val = 0;
 	i = 0;
@@ -33,28 +48,57 @@ int	get_color(char *str)
 			str[len] = str[len] - 32;
 		len++;
 	}
-	while (i++ < len)
-	{
-    	if (str[i] <= 57)
-        	val += (str[i] - 48) * (1 << (4 * (len - 1 - i)));
-    	else
-        	val += (str[i] - 55) * (1 << (4 * (len - 1 - i)));
-	}
+	if (str[len] == '\0')
+		len--;
+	val = get_color_int(i, len, str);
 	return (val);
 }
 
-int	get_color_line(int color1, int color2)
+double	lerp(double col1, double col2, double percent)
 {
-    int color;
-	// t_color col_start;
-	// t_color	col_end;
-
-	color = 0;
-	if (color1 == color2)
-		color = color1;
-	else
-	{
-		color = color1;
-	}
-	return(color);
+	if (col1 == col2)
+		return (col1);
+	return (col1 * (1.0 - percent) + (col2 * percent));
 }
+
+int	color_lerp(int col1, int col2, double percent)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	if (col1 == col2)
+		return (col1);
+	if (percent == 0.0)
+		return (col1);
+	if (percent == 1.0)
+		return (col2);
+	r = (int)lerp(((col1 >> 16) & 0xFF), ((col2 >> 16) & 0xFF), percent);
+	g = (int)lerp(((col1 >> 8) & 0xFF), ((col2 >> 8) & 0xFF), percent);
+	b = (int)lerp((col1 & 0xFF), (col2 & 0xFF), percent);
+	return (r << 16 | g << 8 | b);
+}
+
+double	percent(double x0, double x2, double x1)
+{
+	if (x1 == x0)
+		return (0.0);
+	if (x1 == x2)
+		return (1.0);
+	if (x0 == x2)
+		return (0.0);
+	return ((x1 - x0) / (x2 - x1));
+}
+
+// int	color_line(int col1, int col2, t_data *fdf)
+// {
+// 	int	col;
+
+// 	col = 0;
+// 	fdf->color = 2;
+// 	if (col1 == col2)
+// 		col = col1;
+// 	else
+// 		col = col1;
+// 	return (col);
+// }

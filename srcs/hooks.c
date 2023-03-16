@@ -6,94 +6,11 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 17:05:33 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/08 17:18:18 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:52:20 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
-
-void zoom(t_data *fdf, int flag)
-{
-	int i;
-	int j;
-	
-	// if (flag == 1)
-	// 	fdf->offset += 1;
-	// if (flag == 2)
-	// 	fdf->offset -= 1;
-	// {
-		i = 0;
-		while (i < fdf->map.nbline)
-		{
-			j = 0;
-			while (j < fdf->map.nbcol)
-			{
-				if (flag == 1)
-				{
-					fdf->offset++;;
-					// fdf->map.pixel[i][j].y -= fdf->offset;
-				}
-				if (flag == 2)
-				{
-					fdf->map.pixel[i][j].x += fdf->offset;
-					fdf->map.pixel[i][j].y += fdf->offset;
-				}
-				// if ((flag == 1 && fdf->map.pixel[i][j].save_alti) || (flag == 4 && fdf->map.pixel[i][j].save_alti))
-				// 	{
-				// 		fdf->map.pixel[i][j].alti += 1;
-				// 		if (fdf->map.pixel[i][j].alti == 0)
-				// 			fdf->map.pixel[i][j].alti = fdf->map.pixel[i][j].save_alti;
-				// 	}
-				// if ((flag == 2 && fdf->map.pixel[i][j].save_alti) || (flag == 3 && fdf->map.pixel[i][j].save_alti))
-				// 	{
-				// 		if (fdf->map.pixel[i][j].alti > 0)
-				// 			fdf->map.pixel[i][j].alti -= 1;
-				// 	}
-				j++;
-			}
-			i++;
-		}
-	// }
-}
-
-void zoom_alti(t_data *fdf, int flag)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < fdf->map.nbline)
-	{
-		j = 0;
-		while (j < fdf->map.nbcol)
-		{
-			if ((flag == 1 && fdf->map.pixel[i][j].save_alti))
-					fdf->map.pixel[i][j].alti *= 1.5;
-			if ((flag == 2 && fdf->map.pixel[i][j].save_alti))
-					fdf->map.pixel[i][j].alti /= 1.5;
-			j++;
-		}
-		i++;
-	}
-}
-
-void reverse_alti(t_data *fdf)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < fdf->map.nbline)
-	{
-		j = 0;
-		while (j < fdf->map.nbcol)
-		{
-			fdf->map.pixel[i][j].alti = -fdf->map.pixel[i][j].alti;
-			j++;
-		}
-		i++;
-	}
-}
 
 int	handle_keypress(int keysym, t_data *fdf)
 {
@@ -110,16 +27,16 @@ int	handle_keypress(int keysym, t_data *fdf)
 		fdf->vertical += 10;
 	if (keysym == XK_Down)
 		fdf->vertical -= 10;
-	if (keysym == XK_g)
-		reverse_alti(fdf);
 	if (keysym == XK_KP_Add)
-		zoom(fdf, 1);
+		zoom_in(fdf);
 	if (keysym == XK_KP_Subtract)
-		zoom(fdf, 2);
-	if (keysym == XK_h)
+		zoom_out(fdf);
+	if (keysym == XK_a)
 		zoom_alti(fdf, 1);
-	if (keysym == XK_j)
+	if (keysym == XK_d)
 		zoom_alti(fdf, 2);
+	if (keysym == XK_s)
+		reverse_alti(fdf);
 	return (0);
 }
 
