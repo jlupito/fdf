@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:23:48 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/16 16:36:40 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:23:42 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	color_lerp(int col1, int col2, double percent)
 	return (r << 16 | g << 8 | b);
 }
 
-double	percent(double x0, double x2, double x1)
+double	percent(double x0, double x1, double x2)
 {
 	if (x1 == x0)
 		return (0.0);
@@ -87,18 +87,5 @@ double	percent(double x0, double x2, double x1)
 		return (1.0);
 	if (x0 == x2)
 		return (0.0);
-	return ((x1 - x0) / (x2 - x1));
+	return ((x1 - x0) / (x2 - x0));
 }
-
-// int	color_line(int col1, int col2, t_data *fdf)
-// {
-// 	int	col;
-
-// 	col = 0;
-// 	fdf->color = 2;
-// 	if (col1 == col2)
-// 		col = col1;
-// 	else
-// 		col = col1;
-// 	return (col);
-// }

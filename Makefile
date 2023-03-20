@@ -8,7 +8,7 @@ MLX_FLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 
 #source
 SRCS_DIR = srcs/
-SRCS = check_map.c create_map.c hooks.c error_message.c render.c main.c fdf_utils.c \
+SRCS = check_map.c create_map.c hooks.c error_message.c main.c fdf_utils.c \
 		color.c draw.c zoom.c \
 
 SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))

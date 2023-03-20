@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 12:11:43 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/16 18:19:38 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/20 13:24:07 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,7 @@ void	draw_bresenham(t_data *fdf, int col1, int col2)
 		if ((fdf->map.x1 > 0 && fdf->map.x1 < WINDOW_WIDTH)
 			&& (fdf->map.y1 > 0 && fdf->map.y1 < WINDOW_HEIGHT))
 		{
-			if (fdf->map.dx > fdf->map.dy)
-				fdf->map.percent = percent(fdf->map.x0, fdf->map.x2, fdf->map.x1);
-			else
-				fdf->map.percent = percent(fdf->map.y0, fdf->map.y2, fdf->map.y1);
-			printf("percent: %f\n", fdf->map.percent);
+			fdf->map.percent = percent(fdf->map.x0, fdf->map.x1, fdf->map.x2);
 			img_pix_put(fdf, fdf->map.x1, fdf->map.y1,
 				color_lerp(col1, col2, fdf->map.percent));
 		}
@@ -119,11 +115,3 @@ void	draw_column(t_data *fdf, int i, int j)
 		j++;
 	}
 }
-
-// void	prep_bresenham(t_data *fdf)
-// {
-// 	fdf->map.x1 = fdf->map.x3;
-// 	fdf->map.y1 = fdf->map.y3;
-// 	fdf->map.x2 = fdf->map.x4;
-// 	fdf->map.y2 = fdf->map.y4;
-// }

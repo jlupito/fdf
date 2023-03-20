@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 17:05:33 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/15 16:52:20 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:36:50 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	handle_keypress(int keysym, t_data *fdf)
 		zoom_alti(fdf, 1);
 	if (keysym == XK_d)
 		zoom_alti(fdf, 2);
+	if (keysym == XK_w)
+		zoom_alti(fdf, 3);
 	if (keysym == XK_s)
 		reverse_alti(fdf);
 	return (0);

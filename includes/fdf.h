@@ -6,7 +6,7 @@
 /*   By: jarthaud <jarthaud@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:31:11 by jarthaud          #+#    #+#             */
-/*   Updated: 2023/03/16 18:10:32 by jarthaud         ###   ########.fr       */
+/*   Updated: 2023/03/20 12:44:24 by jarthaud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,6 @@ typedef struct s_map {
 	int		y1;
 	int		x2;
 	int		y2;
-	int		x3;
-	int		y3;
-	int		x4;
-	int		y4;
 	int		dx;
 	int		dy;
 	int		err;
@@ -91,9 +87,8 @@ void		render_background(t_data *fdf, int color);
 void		error_message(int i);
 void		count_col_line(char *argv, t_data *fdf);
 void		img_pix_put(t_data *fdf, int x, int y, int color);
-void		bresenham(t_data *fdf, int color1, int color2/*, int flag*/);
+void		bresenham(t_data *fdf, int color1, int color2);
 void		draw_bresenham(t_data *fdf, int color1, int color2);
-// void		prep_bresenham(t_data *fdf);
 void		draw_line(t_data *fdf, int i, int j);
 void		draw_column(t_data *fdf, int i, int j);
 void		offset(t_data *fdf);
@@ -107,6 +102,7 @@ int			color_lerp(int col1, int col2, double percent);
 
 #endif
 
+// void		prep_bresenham(t_data *fdf);
 //int	color_line(int col1, int col2, t_data *fdf);
 //void	render_grid(t_data *fdf);
 // void	position_map(t_data *fdf);
